@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="zumo_serial" exec="zumo_serial_node" name="zumo_serial_node" namespace="zumo">
+    <param name="zumo_serial_port" value="/dev/ttyACM0" />
+  </node>
+</launch>

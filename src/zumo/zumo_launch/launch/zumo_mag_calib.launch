@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="zumo_calibration" exec="zumo_mag_calib_node" name="zumo_mag_calib_node" namespace="zumo" output="screen"/>
+</launch>

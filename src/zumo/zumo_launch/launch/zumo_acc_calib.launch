@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="zumo_calibration" exec="zumo_acc_calib_node" name="zumo_acc_calib_node" namespace="zumo" output="screen" launch-prefix="xterm -e"/>
+</launch>
