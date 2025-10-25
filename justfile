@@ -80,3 +80,8 @@ pubsubtalker_sin:
 # run sine listener
 pubsublistener_sin:
     pixi run ros2 run cpp_pubsub sine_listener
+
+# fixing just usage in windows11
+# NOTE: requires git to be installed
+
+set windows-shell := ["C:\\Program Files\\Git\\bin\\sh.exe", "-c"]

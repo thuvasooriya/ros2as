@@ -10,28 +10,56 @@ tested in macos 26
 
 ### requirements
 
-requires pixi package manager and just command runner:
+#### pixi
+
+one of the best things to happen to ROS devs
+
+for unix systems
 
 ```bash
-# install pixi
 curl -fsSL https://pixi.sh/install.sh | bash
-
-# install just
-# macos
-brew install just
-
-# linux
-curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
-
-# windows (via cargo)
-cargo install just
-
-# or download from https://github.com/casey/just/releases
 ```
+
+for windows
+
+```ps
+powershell -ExecutionPolicy ByPass -c "irm -useb https://pixi.sh/install.ps1 | iex"
+```
+
+refer to [official guide](https://pixi.sh/latest/installation/) to install it using your favourite package manager
+
+#### just
+
+just a command runner
+
+for unix systems
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to DEST
+```
+
+for windows
+
+```ps
+winget install --id Casey.Just --exact
+```
+
+refer to [official guide](https://github.com/casey/just#installation) to install it using your favourite package manager
+
+#### git
+
+unix systems usually have git preinstalled. if you're on windows i pray to god that you already have git installed, if not you can use the following command. having git is always good. but as an additional benefit just will use the shell provided by git to run sh commands by default.
+
+```ps
+winget install -e --id Git.Git
+```
+
+[official guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 ### installation
 
 ```bash
+# go to cloned directory and
 # install dependencies
 pixi install
 
