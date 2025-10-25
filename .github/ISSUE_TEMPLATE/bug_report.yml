@@ -16,8 +16,10 @@ body:
       options:
         - macos (apple silicon)
         - macos (intel)
-        - linux (64-bit)
-        - windows (64-bit)
+        - linux (x86-64)
+        - linux (arm-64)
+        - windows (x86-64)
+        - windows (arm-64)
     validations:
       required: true
 
@@ -25,8 +27,8 @@ body:
     id: os_version
     attributes:
       label: os version
-      description: specific os version (e.g., macos 14.5, ubuntu 22.04, windows 11)
-      placeholder: "e.g., macos 14.5"
+      description: specific os version (e.g., macos 26, ubuntu 22.04, windows 11)
+      placeholder: "e.g., macos 26"
     validations:
       required: true
 

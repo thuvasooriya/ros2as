@@ -1,8 +1,15 @@
 # ros2labs
 
-ros2 workspace for autonomous systems labs
+ros2 workspace for labs
 
-tested in macos 26
+| platform         | tested | notes                      |
+| ---------------- | ------ | -------------------------- |
+| macos (arm64)    | ✓      | macos tahoe version 26.0.1 |
+| macos (x86_64)   | ?      | should work                |
+| linux (x86_64)   | ?      | should work                |
+| linux (arm64)    | ?      | should work                |
+| windows (x86_64) | ?      | volunteers needed          |
+| windows (arm64)  | ...    | windows 11 testing         |
 
 ---
 
@@ -10,51 +17,30 @@ tested in macos 26
 
 ### requirements
 
-#### pixi
+1. [pixi](https://pixi.sh/latest/installation/)
+2. [just](https://github.com/casey/just#installation)
+3. [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-one of the best things to happen to ROS devs
-
-for unix systems
+#### unix
 
 ```bash
+# install pixi
 curl -fsSL https://pixi.sh/install.sh | bash
-```
-
-for windows
-
-```ps
-powershell -ExecutionPolicy ByPass -c "irm -useb https://pixi.sh/install.ps1 | iex"
-```
-
-refer to [official guide](https://pixi.sh/latest/installation/) to install it using your favourite package manager
-
-#### just
-
-just a command runner
-
-for unix systems
-
-```bash
+# install just, replace DEST with where you want to install
 curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to DEST
+# git is preinstalled on unix systems
 ```
 
-for windows
+#### windows
 
-```ps
+```ps1
+# install pixi
+powershell -ExecutionPolicy ByPass -c "irm -useb https://pixi.sh/install.ps1 | iex"
+# install git
+winget install -e --id Git.Git
+# install just
 winget install --id Casey.Just --exact
 ```
-
-refer to [official guide](https://github.com/casey/just#installation) to install it using your favourite package manager
-
-#### git
-
-unix systems usually have git preinstalled. if you're on windows i pray to god that you already have git installed, if not you can use the following command. having git is always good. but as an additional benefit just will use the shell provided by git to run sh commands by default.
-
-```ps
-winget install -e --id Git.Git
-```
-
-[official guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 ### installation
 
