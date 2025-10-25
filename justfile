@@ -4,6 +4,10 @@ PORT := "/dev/tty.usbmodem1101"
 default:
     just --list
 
+# select serial port interactively
+select_port:
+    pixi run python3 scripts/select_serial_port.py
+
 # build the workspace
 build:
     pixi run build
@@ -54,20 +58,20 @@ rviz_imu:
 
 # run turtlesim tutorial
 turtlesim:
-    pixi run turtlesim
+    pixi run ros2 run turtlesim turtlesim_node
 
 # run pubsub talker
 plab_talker:
-    pixi run plab_t2t
+    pixi run ros2 run cpp_pubsub talker
 
 # run pubsub listener
 plab_listener:
-    pixi run plab_t2l
+    pixi run ros2 run cpp_pubsub listener
 
 # run sine talker
 plab_sine_talker:
-    pixi run plab_t4
+    pixi run ros2 run cpp_pubsub sine_talker
 
 # run sine listener
 plab_sine_listener:
-    pixi run plab_t5
+    pixi run ros2 run cpp_pubsub sine_listener

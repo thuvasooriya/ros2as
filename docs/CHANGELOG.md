@@ -71,3 +71,24 @@ all notable changes and modifications to the original assignment files.
 - added comprehensive README with quick start guide
 - improved clarity and consistency across all lab documents
 - added proper formatting and structure to changelog
+
+---
+
+## bug fixes
+
+### format specifiers
+
+- fixed printf format specifier warnings in zumo_mag_calib.cpp
+- used PRId64 macro from cinttypes for cross-platform int64_t formatting
+
+---
+
+## developer experience
+
+### serial port selection
+
+- added interactive serial port selection script
+- automatically filters relevant serial ports per platform (ttyACM/ttyUSB on linux, cu/tty on macos, COM on windows)
+- updates justfile PORT variable in place
+- added `just select_port` command
+- added pyserial dependency to pixi.toml

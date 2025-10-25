@@ -2,6 +2,8 @@
 
 ros2 workspace for autonomous systems labs
 
+tested in macos 26
+
 ---
 
 ## setup
@@ -45,7 +47,9 @@ just build
 # list all available commands
 just
 
-# connect to zumo robot (adjust PORT in justfile if needed)
+# interactively select which serial port to use
+just select_port
+# connect to zumo robot
 just serial
 
 # monitor sensor data
@@ -87,9 +91,9 @@ just plab_sine_listener
 
 ## documentation
 
-- [PRELAB.md](PRELAB.md) - ros basics and pubsub implementation
-- [LAB1.md](LAB1.md) - zumo ros interface and imu sensor calibration
-- [LAB2.md](LAB2.md) - zumo orientation estimation using kalman filter
+- [PRELAB.md](docs/PRELAB.md) - ros basics and pubsub implementation
+- [LAB1.md](docs/LAB1.md) - zumo ros interface and imu sensor calibration
+- [LAB2.md](docs/LAB2.md) - zumo orientation estimation using kalman filter
 
 ---
 
@@ -99,7 +103,7 @@ just plab_sine_listener
 
 - default serial port is `/dev/ttyACM0` (linux)
 - macos uses `/dev/cu.*` or `/dev/tty.*` for serial devices
-- edit the `PORT` variable in justfile to match your system
+- you can edit the `PORT` variable in justfile to match your usecase
 - override with: `just serial /dev/ttyUSB0`
 
 ### permissions (linux)
@@ -114,9 +118,33 @@ sudo usermod -a -G dialout $USER
 
 ### building
 
-- uses `colcon build --symlink-install` for faster iteration
+- `pixi run build` uses `colcon build --symlink-install` for faster iteration
 - symlink mode allows launch file changes without rebuilding
 - pixi handles ros2 environment sourcing automatically
+
+### macos build warnings
+
+building zumo_msgs outputs:
+
+```sh
+install_name_tool: warning: changes being made to the file will invalidate the code signature in: ./ros2labs/install/zumo_msgs/lib/libzumo_msgs__rosidl_typesupport_fastrtps_c.dylib
+```
+
+similar invalidated code signature warnings for
+
+```
+libzumo_msgs__rosidl_typesupport_introspection_c.dylib
+libzumo_msgs__rosidl_typesupport_c.dylib
+libzumo_msgs__rosidl_generator_py.dylib
+```
+
+and that we are faking the signature using cctools-port
+
+```sh
+[cctools-port]: generating fake signature for './ros2labs/install/zumo_msgs/lib/libzumo_msgs__rosidl_typesupport_fastrtps_c.dylib'
+```
+
+i couldn't find any proper solutions for this and it works fine with the fake signatures. if anyone knows a better solution please give me a ping or submit a pr.
 
 ---
 
@@ -124,14 +152,13 @@ sudo usermod -a -G dialout $USER
 
 ### course information
 
-**course:** EN4594 autonomous systems  
-**institution:** department of electronic and telecommunication engineering, university of moratuwa  
-**original author:** peshala jayasekara  
-**modifications:** cross-platform support, automation scripts, build system improvements
+**course:** EN4594 autonomous systems
+**institution:** department of electronic and telecommunication engineering, university of moratuwa
+**original author:** Dr. Peshala Jayasekara
 
 ### license
 
-original code: copyright (c) 2024 ENTC, university of moratuwa  
+original code: copyright (c) 2024 ENTC, university of moratuwa
 modifications: distributed under the same license as original code
 
 see individual source files for detailed license information.
@@ -140,4 +167,5 @@ see individual source files for detailed license information.
 
 ## changelog
 
+authored by @thuvasooriya, co-authored by claude-sonnet-4.5
 see [CHANGELOG.md](CHANGELOG.md) for detailed changes and modifications.
