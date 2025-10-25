@@ -1,0 +1,60 @@
+name: feature request
+description: suggest a feature or improvement
+title: "[feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        suggest a new feature or improvement.
+
+  - type: dropdown
+    id: lab
+    attributes:
+      label: related lab
+      description: which lab would this improve?
+      options:
+        - prelab (ros2 basics)
+        - lab1 (imu calibration)
+        - lab2 (kalman filter)
+        - general setup
+        - documentation
+        - other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: problem description
+      description: what problem does this feature solve?
+      placeholder: describe the problem or limitation
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: proposed solution
+      description: describe your proposed solution
+      placeholder: how would you solve this?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: alternatives considered
+      description: other solutions you considered
+      placeholder: describe alternative approaches
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: additional context
+      description: any other relevant information
+      placeholder: add mockups, examples, references, etc.
+    validations:
+      required: false

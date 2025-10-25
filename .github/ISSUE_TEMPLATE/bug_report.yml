@@ -1,0 +1,92 @@
+name: bug report
+description: report a bug or issue
+title: "[bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        thanks for reporting an issue. please fill in the details below.
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: platform
+      description: which platform are you using?
+      options:
+        - macos (apple silicon)
+        - macos (intel)
+        - linux (64-bit)
+        - windows (64-bit)
+    validations:
+      required: true
+
+  - type: input
+    id: os_version
+    attributes:
+      label: os version
+      description: specific os version (e.g., macos 14.5, ubuntu 22.04, windows 11)
+      placeholder: "e.g., macos 14.5"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: lab
+    attributes:
+      label: related lab
+      description: which lab is this related to?
+      options:
+        - prelab (ros2 basics)
+        - lab1 (imu calibration)
+        - lab2 (kalman filter)
+        - general setup
+        - other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: issue description
+      description: clear description of the issue
+      placeholder: describe what went wrong
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: steps to reproduce
+      description: steps to reproduce the issue
+      placeholder: |
+        1. run command `just build`
+        2. see error ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: expected behavior
+      description: what did you expect to happen?
+      placeholder: expected the build to succeed
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: error logs
+      description: paste relevant error messages or logs
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: additional context
+      description: any other relevant information
+      placeholder: add screenshots, configuration details, etc.
+    validations:
+      required: false
