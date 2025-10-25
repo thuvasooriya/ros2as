@@ -260,11 +260,9 @@ void ZumoImuKF::TransformAccRawData(
   m_Acc_vec[1] = m_RectifiedAcc_vec[1];
   m_Acc_vec[2] = m_RectifiedAcc_vec[2];
 
-  /// eq. (23) and (24)
-  // Note:
-  // use atan2(y,x) function for arc tangent to obtain angles plus its quadrant
-  // d_Roll  =
-  // d_Pitch =
+  d_Roll = atan2(m_Acc_vec[1], m_Acc_vec[2]);
+  d_Pitch = atan2(-m_Acc_vec[0], sqrt((m_Acc_vec[1] * m_Acc_vec[1]) +
+                                      (m_Acc_vec[2] * m_Acc_vec[2])));
 }
 
 ///*********************************************************************************
@@ -302,9 +300,10 @@ void ZumoImuKF::TransformMagRawData(
 
   mTempMag_vec.normalize();
 
-  /// eq. (32)
-  // use atan2(y,x) function for arc tangent to obtain angles plus its quadrant
-  // d_Yaw =
+  d_Yaw = -atan2(mTempMag_vec[1] * cos(d_Roll) - mTempMag_vec[2] * sin(d_Roll),
+                 mTempMag_vec[0] * cos(d_Pitch) +
+                     mTempMag_vec[1] * sin(d_Pitch) * sin(d_Roll) +
+                     mTempMag_vec[2] * sin(d_Pitch) * cos(d_Roll));
 
   if (true == b_PrintValues) {
     printf("Heading: %f\n\n", d_Yaw * 180.0 / M_PI);
@@ -343,27 +342,30 @@ void ZumoImuKF::KalmanPredict() {
   // 1) Transform gyro readings to Earth frame
   m_GyroEarth_vec = m_DCM_matrix * m_GyroBody_vec;
 
-  // 2) Populate state transition matrix A
+  // 2) State transition matrix
   // Help:
   // e.g. dTheta_y = m_GyroEarth_vec[1]*dt
   // time step is available at dt variable
-  // m_StateTransit_matrix(0,0) =
-  // m_StateTransit_matrix(0,1) =
-  // m_StateTransit_matrix(0,2) =
-  // m_StateTransit_matrix(1,0) =
-  // m_StateTransit_matrix(1,1) =
-  // m_StateTransit_matrix(1,2) =
-  // m_StateTransit_matrix(2,0) =
-  // m_StateTransit_matrix(2,1) =
-  // m_StateTransit_matrix(2,2) =
+  double dTheta_x = m_GyroEarth_vec[0] * dt;
+  double dTheta_y = m_GyroEarth_vec[1] * dt;
+  double dTheta_z = m_GyroEarth_vec[2] * dt;
+
+  m_StateTransit_matrix(0, 0) = 1;
+  m_StateTransit_matrix(0, 1) = -dTheta_z;
+  m_StateTransit_matrix(0, 2) = dTheta_y;
+  m_StateTransit_matrix(1, 0) = dTheta_z;
+  m_StateTransit_matrix(1, 1) = 1;
+  m_StateTransit_matrix(1, 2) = -dTheta_x;
+  m_StateTransit_matrix(2, 0) = -dTheta_y;
+  m_StateTransit_matrix(2, 1) = dTheta_x;
+  m_StateTransit_matrix(2, 2) = 1;
 
   // 3) Predicted rotation matrix column vectors
   // eq. (12), (13) and (14)
   // m_StateX_vec, m_StateY_vec, m_StateZ_vec will be updated at each operation
-
-  // m_StateX_vec =
-  // m_StateY_vec =
-  // m_StateZ_vec =
+  m_StateX_vec = m_StateTransit_matrix * m_StateX_vec;
+  m_StateY_vec = m_StateTransit_matrix * m_StateY_vec;
+  m_StateZ_vec = m_StateTransit_matrix * m_StateZ_vec;
 
   // 4) Predicted state estimate covariances
   // eq. (5)
@@ -371,9 +373,15 @@ void ZumoImuKF::KalmanPredict() {
   // at each operation Rt is the process noise covariance matrix available as
   // m_ProcessNoiseCov_matrix Transpose of a matrix can be achieved using
   // .transpose() function
-  // m_StateXCov_matrix =
-  // m_StateYCov_matrix =
-  // m_StateZCov_matrix =
+  m_StateXCov_matrix = m_StateTransit_matrix * m_StateXCov_matrix *
+                           m_StateTransit_matrix.transpose() +
+                       m_ProcessNoiseCov_matrix;
+  m_StateYCov_matrix = m_StateTransit_matrix * m_StateYCov_matrix *
+                           m_StateTransit_matrix.transpose() +
+                       m_ProcessNoiseCov_matrix;
+  m_StateZCov_matrix = m_StateTransit_matrix * m_StateZCov_matrix *
+                           m_StateTransit_matrix.transpose() +
+                       m_ProcessNoiseCov_matrix;
 
   // 5) populate rotation matrix
   m_DCM_matrix.block<3, 1>(0, 0) = m_StateX_vec;
@@ -394,41 +402,36 @@ void ZumoImuKF::Normalize() {
   mRotY_vec = m_DCM_matrix.block<3, 1>(0, 1);
 
   /// eq. (33)
-  // Help:
-  // Transpose of a vector: x.transpose()
-  // dot product: x.dot(y)
-  // dError =
+  dError = mRotX_vec.dot(mRotY_vec);
 
   Eigen::Matrix<double, 3, 1> mRotXOrtho_vec;
   Eigen::Matrix<double, 3, 1> mRotYOrtho_vec;
   Eigen::Matrix<double, 3, 1> mRotZOrtho_vec;
 
-  /// eq. (34) and (35)
-  // mRotXOrtho_vec =
-  // mRotYOrtho_vec =
+  /// eq. (34) (35)
+  mRotXOrtho_vec = mRotX_vec - (dError / 2.0) * mRotY_vec;
+  mRotYOrtho_vec = mRotY_vec - (dError / 2.0) * mRotX_vec;
 
   /// eq. (36)
-  // cross product: x.cross(y)
-  // mRotZOrtho_vec =
+  mRotZOrtho_vec = mRotXOrtho_vec.cross(mRotYOrtho_vec);
 
   Eigen::Matrix<double, 3, 1> mRotXNorm_vec;
   Eigen::Matrix<double, 3, 1> mRotYNorm_vec;
   Eigen::Matrix<double, 3, 1> mRotZNorm_vec;
 
-  if (b_TaylorNormalization)
-  /// eq. (38), (39) and (40)
-  {
-    // mRotXNorm_vec =
-    // mRotYNorm_vec =
-    // mRotZNorm_vec =
-  } else
-  /// eq. (37)
-  // Help:
-  // to normalize a vector: x.normalize()
-  {
-    // mRotXNorm_vec =
-    // mRotYNorm_vec =
-    // mRotZNorm_vec =
+  if (b_TaylorNormalization) {
+    /// eq. (38), (39) and (40)
+    mRotXNorm_vec =
+        0.5 * (3.0 - mRotXOrtho_vec.dot(mRotXOrtho_vec)) * mRotXOrtho_vec;
+    mRotYNorm_vec =
+        0.5 * (3.0 - mRotYOrtho_vec.dot(mRotYOrtho_vec)) * mRotYOrtho_vec;
+    mRotZNorm_vec =
+        0.5 * (3.0 - mRotZOrtho_vec.dot(mRotZOrtho_vec)) * mRotZOrtho_vec;
+  } else {
+    /// eq. (37)
+    mRotXNorm_vec = mRotXOrtho_vec.normalized();
+    mRotYNorm_vec = mRotYOrtho_vec.normalized();
+    mRotZNorm_vec = mRotZOrtho_vec.normalized();
   }
 
   // set the values
@@ -448,47 +451,55 @@ void ZumoImuKF::KalmanUpdate() {
       mInnovationZ_vec;
   Eigen::Matrix<double, 3, 1> mObservationX_vec, mObservationY_vec,
       mObservationZ_vec;
-
   mObservationX_vec = m_MeasRot_matrix.block<3, 1>(0, 0);
   mObservationY_vec = m_MeasRot_matrix.block<3, 1>(0, 1);
   mObservationZ_vec = m_MeasRot_matrix.block<3, 1>(0, 2);
 
   // eq. (6) for all three: mInnovationX_vec, mInnovationY_vec and
   // mInnovationZ_vec C matrix is available as m_Obs_matrix
-  // mInnovationX_vec =
-  // mInnovationY_vec =
-  // mInnovationZ_vec =
+  mInnovationX_vec = mObservationX_vec - m_Obs_matrix * m_StateX_vec;
+  mInnovationY_vec = mObservationY_vec - m_Obs_matrix * m_StateY_vec;
+  mInnovationZ_vec = mObservationZ_vec - m_Obs_matrix * m_StateZ_vec;
 
   // 2) Innovation Covariances
   Eigen::Matrix<double, 3, 3> mInnovCovX, mInnovCovY, mInnovCovZ;
   // eq. (7) for all three: mInnovCovX, mInnovCovY and mInnovCovZ
   // Qt matrix is the measurement noise covariance available as
   // m_MeasNoiseCov_matrix
-  // mInnovCovX =
-  // mInnovCovY =
-  // mInnovCovZ =
+  mInnovCovX = m_Obs_matrix * m_StateXCov_matrix * m_Obs_matrix.transpose() +
+               m_MeasNoiseCov_matrix;
+  mInnovCovY = m_Obs_matrix * m_StateYCov_matrix * m_Obs_matrix.transpose() +
+               m_MeasNoiseCov_matrix;
+  mInnovCovZ = m_Obs_matrix * m_StateZCov_matrix * m_Obs_matrix.transpose() +
+               m_MeasNoiseCov_matrix;
 
   // 3) Optimal Kalman Gains
   Eigen::Matrix<double, 3, 3> mKalmanGainX, mKalmanGainY, mKalmanGainZ;
   // eq. (8) for all three: mKalmanGainX, mKalmanGainY and mKalmanGainZ
   // Inverse of a matrix can be achieved using .inverse() function
-  // mKalmanGainX =
-  // mKalmanGainY =
-  // mKalmanGainZ =
+  mKalmanGainX =
+      m_StateXCov_matrix * m_Obs_matrix.transpose() * mInnovCovX.inverse();
+  mKalmanGainY =
+      m_StateYCov_matrix * m_Obs_matrix.transpose() * mInnovCovY.inverse();
+  mKalmanGainZ =
+      m_StateZCov_matrix * m_Obs_matrix.transpose() * mInnovCovZ.inverse();
 
   // 4) Updated State Estimate
   // eq. (9) for all three states: m_StateX_vec, m_StateY_vec and m_StateZ_vec
-  // m_StateX_vec =
-  // m_StateY_vec =
-  // m_StateZ_vec =
+  m_StateX_vec = m_StateX_vec + mKalmanGainX * mInnovationX_vec;
+  m_StateY_vec = m_StateY_vec + mKalmanGainY * mInnovationY_vec;
+  m_StateZ_vec = m_StateZ_vec + mKalmanGainZ * mInnovationZ_vec;
 
   // 5) Updated State Covariance
   // eq. (10) for all three: m_StateXCov_matrix, m_StateYCov_matrix and
   // m_StateZCov_matrix Help: a 3x3 identity matrix is available as
   // m_Identity_matrix
-  // m_StateXCov_matrix =
-  // m_StateYCov_matrix =
-  // m_StateZCov_matrix =
+  m_StateXCov_matrix =
+      (m_Identity_matrix - mKalmanGainX * m_Obs_matrix) * m_StateXCov_matrix;
+  m_StateYCov_matrix =
+      (m_Identity_matrix - mKalmanGainY * m_Obs_matrix) * m_StateYCov_matrix;
+  m_StateZCov_matrix =
+      (m_Identity_matrix - mKalmanGainZ * m_Obs_matrix) * m_StateZCov_matrix;
 
   // 6) populate rotation matrix
   m_DCM_matrix.block<3, 1>(0, 0) = m_StateX_vec;

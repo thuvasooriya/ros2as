@@ -40,6 +40,7 @@
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 #include <chrono>
+#include <fstream>
 #include <iostream>
 #include <rclcpp/rclcpp.hpp>
 

@@ -14,8 +14,9 @@ plab-t5 = "ros2 run cpp_pubsub sine_listener"
 plab-t2t = "ros2 run cpp_pubsub talker"
 plab-t2l = "ros2 run cpp_pubsub listener"
 # utils
+rqtn = "bash -c 'source install/setup.sh && rqt'"
 build = {cmd = "colcon build --symlink-install", inputs = ["src"]}
-
+sensors = "bash -c 'source install/setup.sh && ros2 topic echo /zumo/zumo_sensors'"
 
 [dependencies]
 ros-humble-desktop = ">=0.10.0,<0.11"

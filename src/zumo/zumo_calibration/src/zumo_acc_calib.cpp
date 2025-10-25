@@ -138,6 +138,19 @@ void ZumoAccCalib::KeyboardLoop() {
   puts("\nCalibration matrix\n");
   std::cout << m_CalibrationMatrix << endl;
 
+  std::ofstream calib_file("results/acc_calib.txt");
+  if (calib_file.is_open()) {
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 3; j++) {
+        calib_file << m_CalibrationMatrix(i, j);
+        if (j < 2) calib_file << " ";
+      }
+      calib_file << "\n";
+    }
+    calib_file.close();
+    puts("\nCalibration saved to results/acc_calib.txt");
+  }
+
   puts("Press CTRL+C to end!");
 }
 

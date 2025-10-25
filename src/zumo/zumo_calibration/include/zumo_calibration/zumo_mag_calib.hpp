@@ -36,6 +36,7 @@
 #ifndef ZUMO_MAG_CALIB_H
 #define ZUMO_MAG_CALIB_H
 
+#include <fstream>
 #include <rclcpp/rclcpp.hpp>
 
 #include <zumo_calibration/definitions.hpp>
@@ -50,6 +51,7 @@ public:
   ~ZumoMagCalib();
 
   bool Init();
+  void SaveCalibration();
 
 private:
   void ZumoSensorCb(const zumo_msgs::msg::ZumoSensors::ConstSharedPtr pMsg);
