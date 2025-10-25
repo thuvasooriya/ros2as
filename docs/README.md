@@ -111,57 +111,6 @@ just pubsublistener_sin
 
 ---
 
-## notes
-
-### serial port configuration
-
-- default serial port is `/dev/ttyACM0` (linux)
-- macos uses `/dev/cu.*` or `/dev/tty.*` for serial devices
-- you can edit the `PORT` variable in justfile to match your usecase
-- override with: `just serial /dev/ttyUSB0`
-
-### permissions (linux)
-
-```bash
-# grant serial port access
-sudo chmod a+rw /dev/ttyACM0
-
-# or add user to dialout group
-sudo usermod -a -G dialout $USER
-```
-
-### building
-
-- `pixi run build` uses `colcon build --symlink-install` for faster iteration
-- symlink mode allows launch file changes without rebuilding
-- pixi handles ros2 environment sourcing automatically
-
-### macos build warnings
-
-building zumo_msgs outputs:
-
-```sh
-install_name_tool: warning: changes being made to the file will invalidate the code signature in: ./ros2labs/install/zumo_msgs/lib/libzumo_msgs__rosidl_typesupport_fastrtps_c.dylib
-```
-
-similar invalidated code signature warnings for
-
-```
-libzumo_msgs__rosidl_typesupport_introspection_c.dylib
-libzumo_msgs__rosidl_typesupport_c.dylib
-libzumo_msgs__rosidl_generator_py.dylib
-```
-
-and that we are faking the signature using cctools-port
-
-```sh
-[cctools-port]: generating fake signature for './ros2labs/install/zumo_msgs/lib/libzumo_msgs__rosidl_typesupport_fastrtps_c.dylib'
-```
-
-i couldn't find any proper solutions for this and it works fine with the fake signatures. if anyone knows a better solution please give me a ping or submit a pr.
-
----
-
 ## credits
 
 ### course information
