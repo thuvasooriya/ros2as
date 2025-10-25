@@ -15,15 +15,6 @@ sensors = "bash -c 'source install/setup.sh && ros2 topic echo /zumo/zumo_sensor
 # visualize with rqt
 rqt = "bash -c 'source install/setup.sh && rqt'"
 
-# tutorial
-turtlesim = "ros2 run turtlesim turtlesim_node"
-
-# prelab tasks
-plab_t2t = "ros2 run cpp_pubsub talker"
-plab_t2l = "ros2 run cpp_pubsub listener"
-plab_t4 = "ros2 run cpp_pubsub sine_talker"
-plab_t5 = "ros2 run cpp_pubsub sine_listener"
-
 [dependencies]
 ros-humble-desktop = ">=0.10.0,<0.11"
 ros-humble-turtlesim = ">=1.4.2,<2"
