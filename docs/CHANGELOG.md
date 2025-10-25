@@ -92,3 +92,59 @@ all notable changes and modifications to the original assignment files.
 - updates justfile PORT variable in place
 - added `just select_port` command
 - added pyserial dependency to pixi.toml
+
+---
+
+## code quality improvements
+
+### c++ standard upgrade
+
+- upgraded all CMakeLists.txt files from c++14 to c++17
+- improved code quality and modern c++ support across all packages
+
+### header file cleanup
+
+- removed `using namespace std` from all header files
+- moved fstream includes from headers to cpp files
+- added explicit std:: namespace qualifiers in implementation files
+- improved header hygiene and reduced namespace pollution
+
+### cross-platform defaults
+
+- added platform-conditional serial port defaults in definitions.hpp
+- windows defaults to COM1
+- macos defaults to /dev/cu.usbmodem14201
+- linux defaults to /dev/ttyACM0
+
+### python environment handling
+
+- removed hardcoded macos python paths from zumo_msgs/CMakeLists.txt (reverted - see workarounds)
+- now uses pixi-managed python environment variables
+- improved cross-platform python compatibility
+
+### workarounds
+
+**macos python path requirement:**
+- rosidl_generator_py in ros2 humble requires explicit python paths on macos
+- added platform-conditional python path configuration for macos in zumo_msgs/CMakeLists.txt
+- uses CONDA_PREFIX environment variable provided by pixi
+- paths: Python_EXECUTABLE, Python_INCLUDE_DIRS, Python_LIBRARIES
+- required due to cmake FindPython module limitations with ros2 message generation on macos
+
+### task configuration
+
+- removed bash shell dependency from pixi.toml tasks
+- standardized python script invocation to use `pixi run`
+- added unix-only guard to format command in justfile
+
+### error handling
+
+- updated serial port error messages to reference docs/README.md
+- added guidance to run `just select_port` for serial configuration
+- improved user experience with actionable error messages
+
+### project organization
+
+- added results/ directory with .gitkeep
+- added results/*.txt to .gitignore
+- added compile_commands.json to .gitignore

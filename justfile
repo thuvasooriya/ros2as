@@ -4,17 +4,18 @@ PORT := "/dev/tty.usbmodem1101"
 default:
     just --list
 
-# select serial port interactively
-select_port:
-    pixi run python3 scripts/select_serial_port.py
-
 # build the workspace
 build:
     pixi run build
 
 # format all cpp files in src/
+[unix]
 format:
     find src -type f \( -name "*.h" -o -name "*.c" -o -name "*.hpp" -o -name "*.cpp" \) -exec clang-format -i {} +
+
+# select serial port interactively
+select_port:
+    pixi run scripts/select_serial_port.py
 
 # connect to zumo serial port
 serial port=PORT:
@@ -42,10 +43,10 @@ calib_mag:
 
 # edit kalman filter launch file with calibration values in results/ folder
 update_kflaunch:
-    python3 scripts/update_imu_calib.py
+    pixi run scripts/update_imu_calib.py
 
 # upload zumo robot description for visualization
-l2zumodesc:
+load_zumodesc:
     pixi run ros2 launch zumo_launch zumo_startup.launch.py
 
 # launch kalman filter node
@@ -60,18 +61,22 @@ rviz_imu:
 turtlesim:
     pixi run ros2 run turtlesim turtlesim_node
 
+# run turtlesim teleop key
+turtleteleop:
+    pixi run ros2 run turtlesim turtle_teleop_key
+
 # run pubsub talker
-plab_talker:
+pubsubtalker:
     pixi run ros2 run cpp_pubsub talker
 
 # run pubsub listener
-plab_listener:
+pubsublistener:
     pixi run ros2 run cpp_pubsub listener
 
 # run sine talker
-plab_sine_talker:
+pubsubtalker_sin:
     pixi run ros2 run cpp_pubsub sine_talker
 
 # run sine listener
-plab_sine_listener:
+pubsublistener_sin:
     pixi run ros2 run cpp_pubsub sine_listener

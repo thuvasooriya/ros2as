@@ -400,7 +400,7 @@ navigate to: **plugins → visualization → plot**
 
 ```bash
 # upload robot structure for visualization purposes
-just l2zumodesc
+just load_zumodesc
 # pixi run ros2 launch zumo_launch zumo_startup.launch.py
 ```
 

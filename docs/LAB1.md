@@ -144,7 +144,7 @@ just serial <optional device name>
 #### echo sensor data in terminal
 
 ```bash
-just sensors
+just mon_sensors
 # ros2 topic echo /zumo/zumo_sensors
 ```
 
@@ -180,12 +180,12 @@ keep a terminal open echoing `/zumo/zumo_sensors` to ensure continuous data flow
 ```bash
 # follow on-screen instructions
 # once completed, calibration matrix elements are saved at results/ for future use
-just caliba
+just calib_acc
 # ros2 run zumo_calibration zumo_acc_calib_node
 
 # rotate robot in all 3 axes during calibration
 # obtain minimum and maximum values for all three axes (mx, my, mz)
 # press ctrl+c, values are saved to results/
-just calibm
+just calib_mag
 # ros2 run zumo_calibration zumo_mag_calib_node
 ```

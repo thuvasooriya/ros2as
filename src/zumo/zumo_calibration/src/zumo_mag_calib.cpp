@@ -1,5 +1,6 @@
-#include <zumo_calibration/zumo_mag_calib.hpp>
 #include <cinttypes>
+#include <fstream>
+#include <zumo_calibration/zumo_mag_calib.hpp>
 
 ZumoMagCalib::ZumoMagCalib()
     : rclcpp::Node("zumo_mag_calib"), running_min_vec(3), running_max_vec(3) {}
@@ -38,7 +39,8 @@ void ZumoMagCalib::ZumoSensorCb(
 
   char report[80];
   snprintf(report, sizeof(report),
-           "min: {%+6" PRId64 ", %+6" PRId64 ", %+6" PRId64 "}    max: {%+6" PRId64 ", %+6" PRId64 ", %+6" PRId64 "}",
+           "min: {%+6" PRId64 ", %+6" PRId64 ", %+6" PRId64
+           "}    max: {%+6" PRId64 ", %+6" PRId64 ", %+6" PRId64 "}",
            running_min_vec[0], running_min_vec[1], running_min_vec[2],
            running_max_vec[0], running_max_vec[1], running_max_vec[2]);
 

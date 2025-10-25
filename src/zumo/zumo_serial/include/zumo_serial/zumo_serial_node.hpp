@@ -50,8 +50,6 @@
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 
-using namespace std;
-
 class ZumoSerialNode : public rclcpp::Node {
 public:
   ZumoSerialNode();

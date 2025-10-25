@@ -130,12 +130,10 @@ pixi run rosdep install -i --from-path src --rosdistro humble -y
 just build
 
 # run talker/pub
-just plab_talker
-# pixi run plab_t2t
+just pubsubtalker
 
 # run the listener/sub (in another terminal)
-just plab_listener
-# pixi run plab_t2l
+just pubsublistener
 ```
 
 ---
@@ -156,12 +154,10 @@ just plab_listener
 
 ```bash
 # run sine talker
-just plab_sine_talker
-# pixi run plab_t4
+just pubsubtalker_sin
 
 # run sine listener (in another terminal)
-just plab_sine_listener
-# pixi run plab_t5
+just pubsublistener_sin
 ```
 
 submit your answer document (one member from each group, indicating the group number and group members) to moodle.

@@ -1,3 +1,4 @@
+#include <fstream>
 #include <zumo_calibration/zumo_acc_calib.hpp>
 
 ///*********************************************************************************
@@ -130,13 +131,13 @@ void ZumoAccCalib::KeyboardLoop() {
 
   // display
   puts("measurements\n");
-  std::cout << m_MeasurementMatrix << endl;
+  std::cout << m_MeasurementMatrix << std::endl;
 
   puts("\nknown accelerations\n");
-  std::cout << m_AccelerationMatrix << endl;
+  std::cout << m_AccelerationMatrix << std::endl;
 
   puts("\nCalibration matrix\n");
-  std::cout << m_CalibrationMatrix << endl;
+  std::cout << m_CalibrationMatrix << std::endl;
 
   std::ofstream calib_file("results/acc_calib.txt");
   if (calib_file.is_open()) {
@@ -163,7 +164,7 @@ void ZumoAccCalib::DataCollection(int iPose) {
 
   while (c != 'y') {
     puts("Press 'y' and ENTER when you are done!");
-    cin >> c;
+    std::cin >> c;
   }
 
   {

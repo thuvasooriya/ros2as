@@ -36,13 +36,11 @@
 #ifndef ZUMO_MAG_CALIB_H
 #define ZUMO_MAG_CALIB_H
 
-#include <fstream>
 #include <rclcpp/rclcpp.hpp>
 
 #include <zumo_calibration/definitions.hpp>
 #include <zumo_msgs/msg/zumo_sensors.hpp>
 
-using namespace std;
 using std::placeholders::_1;
 
 class ZumoMagCalib : public rclcpp::Node {

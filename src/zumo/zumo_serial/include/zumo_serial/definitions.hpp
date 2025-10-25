@@ -37,7 +37,13 @@
 #define ZUMO_SERIAL_DEFS_HPP
 
 /// Serial COM
+#ifdef _WIN32
+#define SERIAL_PORT_DEFAULT "COM1"
+#elif __APPLE__
+#define SERIAL_PORT_DEFAULT "/dev/cu.usbmodem14201"
+#else
 #define SERIAL_PORT_DEFAULT "/dev/ttyACM0"
+#endif
 #define SERIAL_PORT_PARAMETER "zumo_serial_port"
 
 /// Sensors

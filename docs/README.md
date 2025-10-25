@@ -63,15 +63,15 @@ just calib_mag
 just update_kflaunch
 
 # run kalman filter (lab 2)
-just l2zumodesc
+just load_zumodesc
 just kflaunch
 just rviz_imu
 
 # prelab pubsub examples
-just plab_talker
-just plab_listener
-just plab_sine_talker
-just plab_sine_listener
+just pubsubtalker
+just pubsublistener
+just pubsubtalker_sin
+just pubsublistener_sin
 ```
 
 ---

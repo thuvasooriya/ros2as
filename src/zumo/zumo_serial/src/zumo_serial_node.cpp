@@ -1,3 +1,4 @@
+#include <sstream>
 #include <zumo_serial/zumo_serial_node.hpp>
 
 ///*********************************************************************************
@@ -46,10 +47,12 @@ bool ZumoSerialNode::Init() {
     if (ec) {
       RCLCPP_ERROR(this->get_logger(), "Failed to open serial port '%s': %s",
                    z_SerialPort.c_str(), ec.message().c_str());
-      RCLCPP_INFO(this->get_logger(), "Available serial ports on macOS "
-                                      "typically are /dev/cu.* or /dev/tty.*");
-      RCLCPP_INFO(this->get_logger(),
-                  "List available ports with: ls /dev/cu.* or ls /dev/tty.*");
+      RCLCPP_INFO(
+          this->get_logger(),
+          "See docs/README.md for serial port configuration instructions");
+      RCLCPP_INFO(
+          this->get_logger(),
+          "Run 'just select_port' to interactively select a serial port");
       return false;
     }
 
@@ -99,15 +102,15 @@ void ZumoSerialNode::ReadSerialData() {
     if (!zReceivedData.empty()) {
       RCLCPP_DEBUG(this->get_logger(), "Received: %s", zReceivedData.c_str());
 
-      istringstream iss(zReceivedData);
-      string token;
+      std::istringstream iss(zReceivedData);
+      std::string token;
       auto msg = zumo_msgs::msg::ZumoSensors();
       msg.header.stamp = this->now();
       int iSensorValues[SENSOR_COUNT];
       int i = 0;
 
-      while (getline(iss, token, ',')) {
-        istringstream(token) >> iSensorValues[i];
+      while (std::getline(iss, token, ',')) {
+        std::istringstream(token) >> iSensorValues[i];
         i++;
       }
 

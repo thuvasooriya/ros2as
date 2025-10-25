@@ -40,14 +40,12 @@
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 #include <chrono>
-#include <fstream>
 #include <iostream>
 #include <rclcpp/rclcpp.hpp>
 
 #include <zumo_calibration/definitions.hpp>
 #include <zumo_msgs/msg/zumo_sensors.hpp>
 
-using namespace std;
 using namespace std::chrono_literals;
 using std::placeholders::_1;
 

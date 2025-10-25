@@ -50,7 +50,6 @@
 #include <zumo_imu_kf/definitions.hpp>
 #include <zumo_msgs/msg/zumo_sensors.hpp>
 
-using namespace std;
 using std::placeholders::_1;
 
 class ZumoImuKF : public rclcpp::Node {

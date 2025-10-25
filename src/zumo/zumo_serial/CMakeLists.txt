@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(zumo_serial)
 
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
 endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
