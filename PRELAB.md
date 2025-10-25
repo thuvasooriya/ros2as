@@ -1,4 +1,6 @@
-## ros basics
+# prelab: ros basics and pubsub implementation
+
+## 1. ros basics
 
 ### nodes
 
@@ -18,99 +20,148 @@
 
 can display all kinds of data streams including 3d
 
-### commands
+---
 
-```sh
-# get details about all the topics advertised in a ROS system
-ros2 topic list
+## 2. common commands
 
-# subscribe to a topic?
-ros2 topic echo topic_name # e.g. ros2 topic echo /zumo/sensors
+### building the workspace
 
-# running ros2 nodes
-## using run
-# --ros-args -p max_speed:=1.0 sets a parameter at runtime
-ros2 run package_name node_name parameters_if_any # e.g.  ros2 run my_robot_pkg robot_node --ros-args -p max_speed:=1.0
-
-## using launch
-ros2 launch package_name launch_file # e.g. ros2 launch zumo_keyboard zumo_keyboard_no_calib.launch
-# lauch is preferred because it allows you to set many parameters and many nodes with a script
-
-# launch rqt
-rqt
-
-# lauch rviz2
-rviz2
+```bash
+# build workspace with pixi
+just build
+# pixi run build
 ```
 
-## ros workspace
+### running turtlesim tutorial
+
+```bash
+just turtlesim
+# pixi run turtlesim
+```
+
+### topic operations
+
+```bash
+# get details about all the topics advertised in a ROS system
+just list_topics
+# pixi run ros2 topic list
+
+# subscribe to a topic
+pixi run ros2 topic echo /topic_name
+# example: pixi run ros2 topic echo /zumo/zumo_sensors
+```
+
+### running nodes
+
+```bash
+# using run (sets parameters at runtime)
+pixi run ros2 run package_name node_name --ros-args -p param_name:=value
+# example: pixi run ros2 run my_robot_pkg robot_node --ros-args -p max_speed:=1.0
+
+# using launch (preferred for multiple nodes and parameters)
+pixi run ros2 launch package_name launch_file
+# example: pixi run ros2 launch zumo_launch zumo_startup.launch.py
+```
+
+### visualization tools
+
+```bash
+# launch rqt
+just rqt
+# pixi run rqt
+
+# launch rviz2
+pixi run ros2 run rviz2 rviz2
+```
+
+---
+
+## 3. ros workspace
+
+## 3. ros workspace
 
 - workspace is a directory containing ros packages
 - the ros you install is a core workspace with a collection of basic packages and is dubbed **underlay**
 - typically when working with ros we create/install many local workspaces and dub them **overlay**
 - it is possible to have many different distributions of ROS and multiple corresponding overlays on top on the same system and switch between them
-- workspace has a typical structure
-  - src -> pkg#1 pkg#2
-  - build -> various build artifacts
-  - install -> pkg installations
-  - log
+- workspace has a typical structure:
+  - src → pkg#1, pkg#2, ...
+  - build → various build artifacts
+  - install → pkg installations
+  - log → build and runtime logs
 - **colcon** is the build tool we use with ROS
-- CMakeLists.txt ->
-- package.xml ->
+- CMakeLists.txt defines build configuration
+- package.xml defines package metadata and dependencies
 
-```sh
-# creatig the workspace directory
+```bash
+# creating the workspace directory
 # this command will create a directory at your user home folder
-mkdir -p ~/ros2ws/src
-cd ~/ros2ws
+mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws
 
 # initialize/build with colcon
-colcon build
+just build
+# pixi run build
+# colcon build --symlink-install
 
-# sourcing the overlay can be done by your preferred method
-## permanently using .bashrc
-echo "source $HOME/ros2ws/install/local_setup.bash" >> ~/.bashrc
-source ~/.bashrc
-## using activation scripts inside install folder
-# TODO:
-
+# sourcing the overlay (handled automatically with pixi activation)
+# if not using pixi, source manually:
+source install/setup.bash
 ```
 
-## writing simple pubsub
+---
 
-```sh
-cd ~/ros2ws
+## 4. writing simple pubsub
+
+## 4. writing simple pubsub
+
+```bash
+cd ~/ros2_ws
 
 # initialize ament_cmake template
-ros2 pkg create cpp_pubsub --build-type ament_cmake --destination-directory src
+pixi run ros2 pkg create cpp_pubsub --build-type ament_cmake --destination-directory src
 
 # write/copy your files
 
 # check ros2 dependencies are installed
-rosdep install -i --from-path src --rosdistro humble -y
+pixi run rosdep install -i --from-path src --rosdistro humble -y
 
 # build
-colcon build
+just build
 
 # run talker/pub
-ros2 run cpp_pubsub talker
+just plab_talker
+# pixi run plab_t2t
 
-# NOTE: you need another terminal session
-# run the listener/sub
-ros2 run cpp_pubsub listener
+# run the listener/sub (in another terminal)
+just plab_listener
+# pixi run plab_t2l
 ```
 
-## submission
+---
 
-1. find out where the binaries are created when colcon build command is executed. -> install
-2. get screenshots of the publisher and the subscriber output windows.
-3. using rqt node graph visualize the node graph and how the nodes are connected with each other; obtain a screenshot.
-4. create a second publisher that publishes 𝐴sin𝜔𝑡, where 𝐴 and 𝜔 are user defined constants.
-   you may use a suitable message type from ros std_msgs (https://index.ros.org/p/std_msgs/). the original publisher should not be modified.
-5. create a second subscriber that listens to above 𝐴sin𝜔𝑡 topic. the original subscriber should not be modified.
-6. obtain screenshots of the modified publisher and subscriber output windows.
-7. using rqt,
-   a. node graph: visualize the new node graph for the modified scenario.
-   b. plot: visualize the 𝐴sin𝜔𝑡 topic.
+## 5. submission tasks
+
+1. find out where the binaries are created when colcon build command is executed → **install** folder
+2. get screenshots of the publisher and the subscriber output windows
+3. using rqt node graph visualize the node graph and how the nodes are connected with each other; obtain a screenshot
+4. create a second publisher that publishes $$A\sin\omega t$$, where $$A$$ and $$\omega$$ are user defined constants. you may use a suitable message type from ros std_msgs (https://index.ros.org/p/std_msgs/). the original publisher should not be modified
+5. create a second subscriber that listens to above $$A\sin\omega t$$ topic. the original subscriber should not be modified
+6. obtain screenshots of the modified publisher and subscriber output windows
+7. using rqt:
+   - **node graph:** visualize the new node graph for the modified scenario
+   - **plot:** visualize the $$A\sin\omega t$$ topic
+
+### running sine pubsub
+
+```bash
+# run sine talker
+just plab_sine_talker
+# pixi run plab_t4
+
+# run sine listener (in another terminal)
+just plab_sine_listener
+# pixi run plab_t5
+```
 
 submit your answer document (one member from each group, indicating the group number and group members) to moodle.

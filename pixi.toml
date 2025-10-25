@@ -6,17 +6,23 @@ platforms = ["osx-arm64", "linux-64", "win-64"]
 version = "0.1.0"
 
 [tasks]
-# tutorial
-sim = "ros2 run turtlesim turtlesim_node"
-# prelab
-plab-t4 = "ros2 run cpp_pubsub sine_talker"
-plab-t5 = "ros2 run cpp_pubsub sine_listener"
-plab-t2t = "ros2 run cpp_pubsub talker"
-plab-t2l = "ros2 run cpp_pubsub listener"
-# utils
-rqtn = "bash -c 'source install/setup.sh && rqt'"
+# build workspace
 build = {cmd = "colcon build --symlink-install", inputs = ["src"]}
+
+# monitor sensors topic
 sensors = "bash -c 'source install/setup.sh && ros2 topic echo /zumo/zumo_sensors'"
+
+# visualize with rqt
+rqt = "bash -c 'source install/setup.sh && rqt'"
+
+# tutorial
+turtlesim = "ros2 run turtlesim turtlesim_node"
+
+# prelab tasks
+plab_t2t = "ros2 run cpp_pubsub talker"
+plab_t2l = "ros2 run cpp_pubsub listener"
+plab_t4 = "ros2 run cpp_pubsub sine_talker"
+plab_t5 = "ros2 run cpp_pubsub sine_listener"
 
 [dependencies]
 ros-humble-desktop = ">=0.10.0,<0.11"

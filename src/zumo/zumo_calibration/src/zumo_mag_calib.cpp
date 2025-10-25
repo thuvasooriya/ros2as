@@ -3,9 +3,7 @@
 ZumoMagCalib::ZumoMagCalib()
     : rclcpp::Node("zumo_mag_calib"), running_min_vec(3), running_max_vec(3) {}
 
-ZumoMagCalib::~ZumoMagCalib() {
-  SaveCalibration();
-}
+ZumoMagCalib::~ZumoMagCalib() { SaveCalibration(); }
 
 bool ZumoMagCalib::Init() {
   RCLCPP_INFO(this->get_logger(), "ZumoMagCalib initializing ...");
@@ -50,8 +48,10 @@ void ZumoMagCalib::ZumoSensorCb(
 void ZumoMagCalib::SaveCalibration() {
   std::ofstream calib_file("results/mag_calib.txt");
   if (calib_file.is_open()) {
-    calib_file << "min " << running_min_vec[0] << " " << running_min_vec[1] << " " << running_min_vec[2] << "\n";
-    calib_file << "max " << running_max_vec[0] << " " << running_max_vec[1] << " " << running_max_vec[2] << "\n";
+    calib_file << "min " << running_min_vec[0] << " " << running_min_vec[1]
+               << " " << running_min_vec[2] << "\n";
+    calib_file << "max " << running_max_vec[0] << " " << running_max_vec[1]
+               << " " << running_max_vec[2] << "\n";
     calib_file.close();
     puts("\nMagnetometer calibration saved to results/mag_calib.txt");
   }

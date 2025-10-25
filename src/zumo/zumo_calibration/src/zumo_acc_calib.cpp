@@ -143,7 +143,8 @@ void ZumoAccCalib::KeyboardLoop() {
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 3; j++) {
         calib_file << m_CalibrationMatrix(i, j);
-        if (j < 2) calib_file << " ";
+        if (j < 2)
+          calib_file << " ";
       }
       calib_file << "\n";
     }

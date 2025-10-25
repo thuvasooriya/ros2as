@@ -39,15 +39,17 @@ bool ZumoSerialNode::Init() {
 
   try {
     m_SerialPort = std::make_unique<boost::asio::serial_port>(m_IoService);
-    
+
     boost::system::error_code ec;
     m_SerialPort->open(z_SerialPort, ec);
-    
+
     if (ec) {
-      RCLCPP_ERROR(this->get_logger(), "Failed to open serial port '%s': %s", 
+      RCLCPP_ERROR(this->get_logger(), "Failed to open serial port '%s': %s",
                    z_SerialPort.c_str(), ec.message().c_str());
-      RCLCPP_INFO(this->get_logger(), "Available serial ports on macOS typically are /dev/cu.* or /dev/tty.*");
-      RCLCPP_INFO(this->get_logger(), "List available ports with: ls /dev/cu.* or ls /dev/tty.*");
+      RCLCPP_INFO(this->get_logger(), "Available serial ports on macOS "
+                                      "typically are /dev/cu.* or /dev/tty.*");
+      RCLCPP_INFO(this->get_logger(),
+                  "List available ports with: ls /dev/cu.* or ls /dev/tty.*");
       return false;
     }
 
@@ -59,8 +61,9 @@ bool ZumoSerialNode::Init() {
         boost::asio::serial_port_base::parity::none));
     m_SerialPort->set_option(boost::asio::serial_port_base::stop_bits(
         boost::asio::serial_port_base::stop_bits::one));
-        
-    RCLCPP_INFO(this->get_logger(), "Successfully opened serial port '%s'", z_SerialPort.c_str());
+
+    RCLCPP_INFO(this->get_logger(), "Successfully opened serial port '%s'",
+                z_SerialPort.c_str());
   } catch (const std::exception &e) {
     RCLCPP_ERROR(this->get_logger(), "Exception occurred: %s", e.what());
     return false;

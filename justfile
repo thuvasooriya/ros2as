@@ -1,39 +1,73 @@
-#"/dev/ttyACM0"
-
 PORT := "/dev/tty.usbmodem1101"
 
+# help
 default:
     just --list
 
+# build the workspace
+build:
+    pixi run build
+
+# format all cpp files in src/
 format:
     find src -type f \( -name "*.h" -o -name "*.c" -o -name "*.hpp" -o -name "*.cpp" \) -exec clang-format -i {} +
 
+# connect to zumo serial port
 serial port=PORT:
     pixi run ros2 run zumo_serial zumo_serial_node --ros-args -r __ns:=/zumo -p zumo_serial_port:={{ port }}
 
-sensors:
+# monitor sensors topic
+mon_sensors:
     pixi run sensors
 
-tlist:
+# visualize with rqt
+rqt:
+    pixi run rqt
+
+# list all the topics
+list_topics:
     pixi run ros2 topic list
 
-caliba:
+# start calibration procedure for accelerometer
+calib_acc:
     pixi run ros2 run zumo_calibration zumo_acc_calib_node
 
-calibm:
+# start calibration procedure for magnetometer
+calib_mag:
     pixi run ros2 run zumo_calibration zumo_mag_calib_node
 
+# edit kalman filter launch file with calibration values in results/ folder
 update_kflaunch:
     python3 scripts/update_imu_calib.py
 
+# upload zumo robot description for visualization
 l2zumodesc:
     pixi run ros2 launch zumo_launch zumo_startup.launch.py
 
-l2kflaunch:
+# launch kalman filter node
+kflaunch:
     pixi run ros2 launch zumo_launch zumo_imu_kf.launch
 
-l2rviz:
-    # TODO: check if this command works
-    # pixi run rviz2 -d ./.rviz2/zumo_imu.rviz
-    # FIXME: roll pitch yaw values are not updated in gui
+# launch rviz with zumo_imu profile
+rviz_imu:
     pixi run ros2 run rviz2 rviz2 -d ./.rviz2/zumo_imu.rviz
+
+# run turtlesim tutorial
+turtlesim:
+    pixi run turtlesim
+
+# run pubsub talker
+plab_talker:
+    pixi run plab_t2t
+
+# run pubsub listener
+plab_listener:
+    pixi run plab_t2l
+
+# run sine talker
+plab_sine_talker:
+    pixi run plab_t4
+
+# run sine listener
+plab_sine_listener:
+    pixi run plab_t5
