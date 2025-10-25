@@ -87,17 +87,7 @@ zumo/
 └── zumo_serial/
 ```
 
-### 3.3 device manager rules (optionaL, linux specific)
-
-copy the `a-star.rules` file to ubuntu udev rules folder:
-
-```bash
-sudo cp -a ./a-star.rules /etc/udev/rules.d/
-```
-
-this defines how devices are identified and managed by the linux system.
-
-### 3.4 build ROS workspace
+### 3.2 build ROS workspace
 
 navigate to your ROS workspace and build:
 
@@ -109,7 +99,7 @@ pixi run build
 
 **important:** the `--symlink-install` parameter creates symbolic links instead of copying files, allowing immediate effect of changes to launch files without rebuilding.
 
-### 3.5 zumo connection
+### 3.3 zumo connection
 
 1. connect zumo 32u4 to computer using usb a to micro-b cable
 2. verify connection
@@ -126,7 +116,7 @@ check for `ttyACM*` or any `ttyUSB*`
 sudo chmod a+rw /dev/ttyACM0
 ```
 
-### 3.6 running the lab
+### 3.4 running the lab
 
 execute the following steps:
 
