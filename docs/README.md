@@ -91,9 +91,9 @@ just plab_sine_listener
 
 ## documentation
 
-- [PRELAB.md](docs/PRELAB.md) - ros basics and pubsub implementation
-- [LAB1.md](docs/LAB1.md) - zumo ros interface and imu sensor calibration
-- [LAB2.md](docs/LAB2.md) - zumo orientation estimation using kalman filter
+- [PRELAB.md](PRELAB.md) - ros basics and pubsub implementation
+- [LAB1.md](LAB1.md) - zumo ros interface and imu sensor calibration
+- [LAB2.md](LAB2.md) - zumo orientation estimation using kalman filter
 
 ---
 
@@ -167,5 +167,6 @@ see individual source files for detailed license information.
 
 ## changelog
 
-authored by @thuvasooriya, co-authored by claude-sonnet-4.5
+changes authored by @thuvasooriya, co-authored by claude-sonnet-4.5
+
 see [CHANGELOG.md](CHANGELOG.md) for detailed changes and modifications.
