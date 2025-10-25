@@ -53,7 +53,7 @@ just select_port
 just serial
 
 # monitor sensor data
-just mon_sensors
+just sensors
 
 # run calibration procedures (lab 1)
 just calib_acc

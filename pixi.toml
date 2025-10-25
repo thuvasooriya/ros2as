@@ -31,4 +31,4 @@ pyserial = ">=3.5,<4"
 [activation]
 scripts = ["install/setup.sh"]
 [target.win-64.activation]
-scripts = ["install/setup.bat"]
+scripts = ["install/setup.ps1"]

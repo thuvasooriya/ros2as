@@ -144,7 +144,7 @@ just serial <optional device name>
 #### echo sensor data in terminal
 
 ```bash
-just mon_sensors
+just sensors
 # ros2 topic echo /zumo/zumo_sensors
 ```
 

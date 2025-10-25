@@ -373,7 +373,7 @@ just serial <optional device name>
 #### echo sensor data in terminal
 
 ```bash
-just mon_sensors
+just sensors
 # pixi run ros2 topic echo /zumo/zumo_sensors
 ```
 
@@ -471,7 +471,7 @@ zumo/zumo_imu_kf/src/zumo_imu_kf.cpp
 - use calibration parameters from lab 1 (accelerometer matrix and magnetometer offsets)
 - copy these values into `zumo_imu_kf.launch` file or use `just update_kflaunch` to update automatically
 - always verify continuous sensor data flow before starting the kalman filter
-- use `just mon_sensors` to monitor sensor topics during operation
+- use `just sensors` to monitor sensor topics during operation
 - rviz2 visualization provides immediate feedback on orientation estimation accuracy
 - the prediction step uses gyroscope data (high frequency, drifts over time)
 - the update step uses accelerometer and magnetometer (low frequency, absolute reference)

@@ -22,7 +22,7 @@ serial port=PORT:
     pixi run ros2 run zumo_serial zumo_serial_node --ros-args -r __ns:=/zumo -p zumo_serial_port:={{ port }}
 
 # monitor sensors topic
-mon_sensors:
+sensors:
     pixi run sensors
 
 # visualize with rqt
