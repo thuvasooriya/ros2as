@@ -1,7 +1,7 @@
 [workspace]
 authors = ["thuvasooriya <74165167+thuvasooriya@users.noreply.github.com>"]
 channels = ["robostack-humble", "conda-forge"]
-name = "ros2as"
+name = "ros2labs"
 platforms = ["osx-arm64", "linux-64", "win-64"]
 version = "0.1.0"
 
