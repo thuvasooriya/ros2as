@@ -1,4 +1,4 @@
-# PORT := "/dev/ttyACM0"
+#"/dev/ttyACM0"
 
 PORT := "/dev/tty.usbmodem1101"
 
@@ -10,9 +10,6 @@ format:
 
 serial port=PORT:
     pixi run ros2 run zumo_serial zumo_serial_node --ros-args -r __ns:=/zumo -p zumo_serial_port:={{ port }}
-
-startl1:
-    pixi run ros2 launch zumo_launch zumo_serial_node.launch
 
 sensors:
     pixi run sensors
@@ -36,5 +33,7 @@ l2kflaunch:
     pixi run ros2 launch zumo_launch zumo_imu_kf.launch
 
 l2rviz:
+    # TODO: check if this command works
     # pixi run rviz2 -d ./.rviz2/zumo_imu.rviz
+    # FIXME: roll pitch yaw values are not updated in gui
     pixi run ros2 run rviz2 rviz2 -d ./.rviz2/zumo_imu.rviz

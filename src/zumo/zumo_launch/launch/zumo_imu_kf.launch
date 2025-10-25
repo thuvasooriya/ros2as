@@ -13,25 +13,25 @@
     <param name="meas_y_std" value="0.1" />
     <param name="meas_z_std" value="0.1" />
 
-    <param name="mag_min_x" value="-10953" />
-    <param name="mag_min_y" value="-8914" />
-    <param name="mag_min_z" value="667" />
-    <param name="mag_max_x" value="-1914" />
-    <param name="mag_max_y" value="1102" />
-    <param name="mag_max_z" value="8312" />
+    <param name="mag_min_x" value="-10481" />
+    <param name="mag_min_y" value="-1734" />
+    <param name="mag_min_z" value="-1273" />
+    <param name="mag_max_x" value="-450" />
+    <param name="mag_max_y" value="2884" />
+    <param name="mag_max_z" value="7312" />
 
-    <param name="acc_cali_11" value="0.949933" />
-    <param name="acc_cali_12" value="-0.0137455" />
-    <param name="acc_cali_13" value="0.00477239" />
-    <param name="acc_cali_21" value="0.00895212" />
-    <param name="acc_cali_22" value="1.00195" />
-    <param name="acc_cali_23" value="0.00671703" />
-    <param name="acc_cali_31" value="-0.00859809" />
-    <param name="acc_cali_32" value="-0.00283441" />
-    <param name="acc_cali_33" value="0.988116" />
-    <param name="acc_cali_41" value="0.288553" />
-    <param name="acc_cali_42" value="0.0342103" />
-    <param name="acc_cali_43" value="-1.0229" />
+    <param name="acc_cali_11" value="1.00571" />
+    <param name="acc_cali_12" value="-0.01018" />
+    <param name="acc_cali_13" value="-0.000388031" />
+    <param name="acc_cali_21" value="-0.00327773" />
+    <param name="acc_cali_22" value="0.997458" />
+    <param name="acc_cali_23" value="-0.00423007" />
+    <param name="acc_cali_31" value="0.00406078" />
+    <param name="acc_cali_32" value="-0.00664458" />
+    <param name="acc_cali_33" value="0.990737" />
+    <param name="acc_cali_41" value="0.238314" />
+    <param name="acc_cali_42" value="-0.0774392" />
+    <param name="acc_cali_43" value="-0.574675" />
 
 
   </node>

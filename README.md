@@ -13,7 +13,7 @@ curl -fsSL https://pixi.sh/install.sh | bash
 build workspace:
 
 ```bash
-pixi run colcon build
+pixi run build
 ```
 
 ## packages
